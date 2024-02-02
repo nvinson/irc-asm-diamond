@@ -1,9 +1,12 @@
+.PHONEY: clean all
+
+all: diamond
+
 diamond: diamond.o
-	ld diamond.o -o diamond
+	ld -o $@ $<
 
 diamond.o: diamond.asm
-	nasm -f elf64 -g diamond.asm
+	nasm -f elf64 -g $<
 
-.PHONEY: clean
 clean:
 	rm -f diamond.o diamond
