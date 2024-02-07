@@ -24,10 +24,10 @@ _start:
 
 strlen:
         ; arguments:
-        ;    in -> QWORD pointer to string
-        ;    out -> QWORD length
+        ;    parameters -> QWORD pointer to string
+        ;    rax -> length
         PROLOUGE                ; pushes rbp, and sets rbp to rsp
-        mov rsi, [rbp + 16 + 8] ; load pointer from arguments
+        mov rsi, [rbp + 16] ; load pointer from arguments
         mov rax, 0              ; zero counter
 .loop:
         cmp BYTE [rsi], 0       ; check if the end is reached
@@ -36,7 +36,6 @@ strlen:
         inc rsi
         jmp .loop
 .return:
-        mov [rbp + 16], rax
         EPILOGUE
 
 ; Local Variables:
