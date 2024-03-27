@@ -39,6 +39,20 @@ strlen:
 .return:
         EPILOGUE
 
+is_ascii_digit:
+        ; arguments:
+        ;    parameters -> ASCII char
+        ;    rax -> boolean
+        PROLOGUE
+        mov rax, 0
+        mov rsi, [rbp + 16]
+        sub rsi, '0'
+        cmp rsi, 9
+        ja .return
+        mov rax, 1
+.return:
+        EPILOGUE
+        
 ; Local Variables:
 ; mode: nasm
 ; End:
