@@ -3,12 +3,13 @@
 %define STDOUT 1
 %define NEWLINE 0xa
 
-%macro PROLOUGE 0
+%macro PROLOGUE 0
         push rbp
         mov rbp, rsp
 %endmacro
 
 %macro EPILOGUE 0
+        mov rsp, rbp
         pop rbp
         ret
 %endmacro
@@ -26,7 +27,7 @@ strlen:
         ; arguments:
         ;    parameters -> QWORD pointer to string
         ;    rax -> length
-        PROLOUGE                ; pushes rbp, and sets rbp to rsp
+        PROLOGUE             ; pushes rbp, and sets rbp to rsp
         mov rsi, [rbp + 16] ; load pointer from arguments
         mov rax, 0              ; zero counter
 .loop:
