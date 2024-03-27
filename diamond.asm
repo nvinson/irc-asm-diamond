@@ -39,17 +39,19 @@ strlen:
 .return:
         EPILOGUE
 
-is_ascii_digit:
+ctoi:
         ; arguments:
         ;    parameters -> ASCII char
-        ;    rax -> boolean
+        ;    rax -> int
+        ;    rdx -> error boolean
         PROLOGUE
-        mov rax, 0
-        mov rsi, [rbp + 16]
-        sub rsi, '0'
-        cmp rsi, 9
-        ja .return
-        mov rax, 1
+        mov rdx, 0
+        mov rax, [rbp + 16]
+        sub rax, '0'
+        cmp rax, 9
+        ja .error        
+.error:
+        mov rdx, 1
 .return:
         EPILOGUE
         
