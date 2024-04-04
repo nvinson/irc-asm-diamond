@@ -15,15 +15,11 @@
 %endmacro
 
 section .text
-global _start
-        
-_start:
-        mov rbp, rsp
-.exit:
-        mov rax, SYS_EXIT
-        syscall
 
-strlen:
+global ircd_strlen
+global ircd_ctoi
+        
+ircd_strlen:
         ; arguments:
         ;    parameters -> pointer to string
         ;    return -> length
@@ -38,17 +34,16 @@ strlen:
 .return:
         EPILOGUE
 
-ctoi:
+ircd_ctoi:
         ; arguments:
-        ;    parameters -> ASCII char
-        ;    return -> int, error
+        ;    parameters -> ASCII char, out int
+        ;    return -> int
         PROLOGUE
-        mov rdx, 0
         mov rax, rdi
         sub rax, '0'
         cmp rax, 9
-        jle return
-        mov rdx, 1        
+        jle .return
+        mov BYTE [rsi], 1
 .return:
         EPILOGUE
         
