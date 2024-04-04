@@ -25,16 +25,15 @@ _start:
 
 strlen:
         ; arguments:
-        ;    parameters -> QWORD pointer to string
-        ;    rax -> length
-        PROLOGUE             ; pushes rbp, and sets rbp to rsp
-        mov rsi, [rbp + 16] ; load pointer from arguments
-        mov rax, 0              ; zero counter
+        ;    parameters -> pointer to string
+        ;    return -> length
+        PROLOGUE
+        mov rax, 0
 .loop:
-        cmp BYTE [rsi], 0       ; check if the end is reached
+        cmp BYTE [rdi], 0
         je .return
         inc rax
-        inc rsi
+        inc rdi
         jmp .loop
 .return:
         EPILOGUE
@@ -42,16 +41,14 @@ strlen:
 ctoi:
         ; arguments:
         ;    parameters -> ASCII char
-        ;    rax -> int
-        ;    rdx -> error boolean
+        ;    return -> int, error
         PROLOGUE
         mov rdx, 0
-        mov rax, [rbp + 16]
+        mov rax, rdi
         sub rax, '0'
         cmp rax, 9
-        ja .error        
-.error:
-        mov rdx, 1
+        jle return
+        mov rdx, 1        
 .return:
         EPILOGUE
         
