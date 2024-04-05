@@ -17,7 +17,7 @@
 section .text
 
 global ircd_strlen
-global ircd_ctoi
+global ircd_stoi
         
 ircd_strlen:
         ; arguments:
@@ -34,16 +34,31 @@ ircd_strlen:
 .return:
         EPILOGUE
 
-ircd_ctoi:
-        ; arguments:
-        ;    parameters -> ASCII char, out int
+
+ircd_stoi:
+        ; arguments
+        ;    parameters -> char*, (out) int*
         ;    return -> int
         PROLOGUE
-        mov rax, rdi
-        sub rax, '0'
-        cmp rax, 9
-        jle .return
-        mov BYTE [rsi], 1
+        mov rax, 0
+        mov r8, 0
+
+.loop:
+        mov r8b, [rdi]
+        inc rdi
+        cmp r8b, 0
+        je .return
+
+        sub r8, '0'
+        cmp r8, 9
+        ja .error
+        imul rax, 10
+        add rax, r8
+        jmp .loop
+        
+.error:
+        mov DWORD [rsi], 1
+        
 .return:
         EPILOGUE
         
