@@ -1,12 +1,13 @@
 #include <assert.h>
-#include <stdio.h>
+#include <string.h>
 
 int ircd_strlen(char *p);
 int ircd_stoi(char *p, int *err);
+void ircd_draw_row(int width, int row, char *p);
 
-int main(int argc, char **argv) {
-  assert(ircd_strlen("hello world") == 11);
+void test_ircd_strlen() { assert(ircd_strlen("hello world") == 11); }
 
+void test_ircd_stoi() {
   int i = 0;
   int err = 0;
 
@@ -19,6 +20,26 @@ int main(int argc, char **argv) {
 
   ircd_stoi("abc", &err);
   assert(err == 1);
+}
 
+void test_ircd_draw_row() {
+  const int size = 10;
+  const char *rows[10] = {
+      "    *    ", "   ***   ", "  *****  ", " ******* ", "*********",
+  };
+
+  char row[10];
+  row[9] = 0;
+  for (int i = 0; i < size / 2; i++) {
+    memset(row, ' ', 9);
+    ircd_draw_row(size - 1, i, row);
+    assert(strcmp(row, rows[i]) == 0);
+  }
+}
+
+int main(int argc, char **argv) {
+  test_ircd_strlen();
+  test_ircd_stoi();
+  test_ircd_draw_row();
   return 0;
 }

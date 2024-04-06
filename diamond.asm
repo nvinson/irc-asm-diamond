@@ -18,6 +18,7 @@ section .text
 
 global ircd_strlen
 global ircd_stoi
+global ircd_draw_row
         
 ircd_strlen:
         ; arguments:
@@ -61,6 +62,43 @@ ircd_stoi:
         
 .return:
         EPILOGUE
+
+ircd_draw_row:
+        ; arguments
+        ;    parameters -> int size, int row, char* str
+        PROLOGUE        
+        ; mid point
+        push rdx
+        mov rdx, 0
+        mov rax, rdi
+        mov r8, 2
+        idiv r8
+        pop rdx
+        
+        ; calculate left side
+        mov r8, rax
+        sub r8, rsi
+        ; right half
+        mov r9, rax
+        add r9, rsi
+        add r9, 1
+
+        ; loop to fill in left..=right
+        mov rcx, r8
+.loop:
+        cmp rcx, r9
+        jge .loop_end
+        lea r10, [rdx + rcx]
+        mov BYTE [r10], '*'
+        inc rcx
+        jmp .loop
+.loop_end:
+
+        ; fill in the mid point for row 0
+        lea r10, [rdx + rax]
+        mov BYTE [r10], '*'
+        EPILOGUE
+        
         
 ; Local Variables:
 ; mode: nasm
