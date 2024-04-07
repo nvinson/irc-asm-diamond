@@ -19,6 +19,7 @@ section .text
 global ircd_strlen
 global ircd_stoi
 global ircd_draw_row
+global ircd_memset
         
 ircd_strlen:
         ; arguments:
@@ -98,7 +99,25 @@ ircd_draw_row:
         lea r10, [rdx + rax]
         mov BYTE [r10], '*'
         EPILOGUE
+
+
+ircd_memset:
+        ; parameters
+        ;     arguments -> pointer, byte, length
+        PROLOGUE
+        mov rcx, 0
+
+.loop:        
+        cmp rcx, rdx
+        je .return
+
+        lea r8, [rdi + rcx]
+        mov [r8], si
+        inc rcx
+        jmp .loop
         
+.return:
+        EPILOGUE
         
 ; Local Variables:
 ; mode: nasm

@@ -4,6 +4,7 @@
 int ircd_strlen(char *p);
 int ircd_stoi(char *p, int *err);
 void ircd_draw_row(int width, int row, char *p);
+void ircd_memset(char *dest, char b, size_t size);
 
 void test_ircd_strlen() { assert(ircd_strlen("hello world") == 11); }
 
@@ -37,9 +38,17 @@ void test_ircd_draw_row() {
   }
 }
 
+void test_ircd_memset() {
+  char data[5];
+  ircd_memset(data, '*', 4);
+  data[4] = 0;
+  assert(strcmp(data, "****") == 0);
+}
+
 int main(int argc, char **argv) {
   test_ircd_strlen();
   test_ircd_stoi();
   test_ircd_draw_row();
+  test_ircd_memset();
   return 0;
 }
